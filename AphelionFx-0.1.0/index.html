@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aphelion FXs — The Center of Your Sound</title>
+<meta name="description" content="Aphelion FXs — Professional audio plugins engineered with precision. Studio-grade effects for producers who demand excellence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --ivory: #faf8f4;
+    --warm-white: #f5f2ec;
+    --parchment: #ede8df;
+    --sand: #ddd5c8;
+    --gold: #c9a84c;
+    --gold-bright: #e2bd52;
+    --gold-dark: #a68832;
+    --ember: #d4813a;
+    --ember-deep: #b8622a;
+    --corona: #e8953a;
+    --flame: #d64e1e;
+    --char: #2a2118;
+    --warm-black: #1a1510;
+    --text: #3d342a;
+    --text-mid: #6b5e50;
+    --text-light: #9a8d7e;
+    --text-faint: #b8ad9e;
+    --glow: rgba(201,168,76,0.25);
+    --glow-strong: rgba(201,168,76,0.45);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --ease: cubic-bezier(.4,0,.15,1);
+    --nav-h: 72px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h);}
+body{font-family:var(--sans);background:var(--ivory);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::selection{background:var(--gold);color:#fff;}
+
+/* ═══════════════════════════════
+   GRAIN OVERLAY
+═══════════════════════════════ */
+body::after{
+    content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+    opacity:.028;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+.nav{
+    position:fixed;top:0;left:0;right:0;z-index:999;
+    height:var(--nav-h);display:flex;align-items:center;
+    justify-content:space-between;
+    padding:0 clamp(1.5rem,4vw,3.5rem);
+    background:rgba(250,248,244,0.8);
+    backdrop-filter:blur(20px) saturate(1.3);
+    border-bottom:1px solid rgba(201,168,76,0.1);
+    transition:all .4s var(--ease);
+}
+.nav.scrolled{background:rgba(250,248,244,0.95);border-bottom-color:rgba(201,168,76,0.2);box-shadow:0 1px 30px rgba(201,168,76,0.06);}
+.nav-brand{
+    font-family:var(--serif);font-weight:300;font-size:1.5rem;
+    letter-spacing:.22em;color:var(--gold-dark);text-transform:uppercase;
+}
+.nav-brand span{font-weight:600;color:var(--char);}
+.nav-links{display:flex;gap:2.2rem;list-style:none;align-items:center;}
+.nav-links a{
+    color:var(--text-mid);text-decoration:none;font-size:.78rem;
+    font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    transition:color .3s;position:relative;
+}
+.nav-links a::after{
+    content:'';position:absolute;bottom:-3px;left:50%;width:0;height:1.5px;
+    background:var(--gold);transition:all .3s var(--ease);transform:translateX(-50%);
+}
+.nav-links a:hover{color:var(--gold-dark);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+    padding:.6rem 1.8rem;background:var(--char);color:var(--warm-white);
+    border:none;border-radius:100px;font-family:var(--sans);font-size:.78rem;
+    font-weight:600;letter-spacing:.08em;cursor:pointer;
+    transition:all .3s var(--ease);text-transform:uppercase;
+}
+.nav-cta:hover{background:var(--gold-dark);box-shadow:0 4px 20px var(--glow);}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:.5rem;flex-direction:column;gap:5px;}
+.burger span{display:block;width:22px;height:1.5px;background:var(--text-mid);transition:.3s;}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px);}
+
+/* ═══════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════ */
+section{position:relative;z-index:1;}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(1.5rem,4vw,2.5rem);}
+.sec-label{
+    font-family:var(--sans);font-size:.68rem;font-weight:700;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+    margin-bottom:.8rem;display:inline-block;
+}
+.sec-title{
+    font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.4rem);
+    font-weight:300;letter-spacing:.01em;line-height:1.2;margin-bottom:1rem;
+    color:var(--char);
+}
+.sec-title em{font-style:italic;color:var(--gold-dark);}
+.sec-desc{color:var(--text-mid);font-size:1rem;max-width:540px;margin-bottom:3rem;line-height:1.8;}
+
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.rv.vis{opacity:1;transform:none;}
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+#hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding:calc(var(--nav-h) + 2rem) 0 4rem;
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(226,189,82,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(212,129,58,0.04) 0%, transparent 40%),
+        var(--ivory);
+    overflow:hidden;position:relative;
+}
+/* warm light wash at top */
+#hero::before{
+    content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);
+    width:140%;height:80%;
+    background:radial-gradient(ellipse, rgba(226,189,82,0.07) 0%, transparent 60%);
+    pointer-events:none;
+}
+
+.hero-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+    width:100%;
+}
+.hero-text{position:relative;z-index:2;}
+.hero-eyebrow{
+    font-family:var(--sans);font-size:.7rem;font-weight:700;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+    margin-bottom:1.5rem;display:inline-block;
+    padding:.35rem 1rem;border:1px solid rgba(201,168,76,0.3);
+    border-radius:100px;
+}
+.hero-h{
+    font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,4.8rem);
+    font-weight:300;line-height:1.05;letter-spacing:-.01em;
+    color:var(--char);margin-bottom:1.5rem;
+}
+.hero-h strong{font-weight:600;}
+.hero-h em{font-style:italic;color:var(--gold-dark);font-weight:400;}
+.hero-sub{
+    font-size:1.08rem;color:var(--text-mid);max-width:480px;
+    line-height:1.8;margin-bottom:2.5rem;
+}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
+.btn-gold{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.9rem 2.2rem;background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+    color:#fff;border:none;border-radius:100px;font-family:var(--sans);
+    font-size:.88rem;font-weight:600;cursor:pointer;letter-spacing:.04em;
+    transition:all .3s var(--ease);box-shadow:0 6px 30px var(--glow);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 10px 40px var(--glow-strong);}
+.btn-outline{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.9rem 2rem;background:transparent;
+    color:var(--text);border:1.5px solid var(--sand);
+    border-radius:100px;font-family:var(--sans);
+    font-size:.88rem;font-weight:600;cursor:pointer;
+    transition:all .3s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-dark);}
+
+/* ── ANIMATED SUN ── */
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:480px;}
+.sun-container{position:relative;width:320px;height:320px;}
+
+/* corona rays */
+.corona{
+    position:absolute;inset:-60%;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(226,189,82,0.08) 20%, rgba(232,149,58,0.03) 45%, transparent 65%);
+    animation:coronaPulse 6s ease-in-out infinite;
+}
+.corona:nth-child(2){
+    inset:-45%;
+    background:radial-gradient(circle, rgba(226,189,82,0.06) 25%, rgba(214,78,30,0.02) 50%, transparent 65%);
+    animation:coronaPulse 8s ease-in-out infinite reverse;
+}
+.corona:nth-child(3){
+    inset:-80%;
+    background:radial-gradient(circle, rgba(226,189,82,0.04) 15%, transparent 50%);
+    animation:coronaPulse 10s ease-in-out infinite 2s;
+}
+@keyframes coronaPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.08);opacity:.7;}}
+
+/* sun rays */
+.sun-rays{
+    position:absolute;inset:-30%;
+    animation:raysSpin 120s linear infinite;
+}
+.sun-rays::before,.sun-rays::after{
+    content:'';position:absolute;inset:0;
+    background:conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(226,189,82,0.04) 5deg, transparent 10deg,
+        transparent 20deg, rgba(226,189,82,0.03) 25deg, transparent 30deg,
+        transparent 45deg, rgba(226,189,82,0.05) 50deg, transparent 55deg,
+        transparent 70deg, rgba(226,189,82,0.03) 75deg, transparent 80deg,
+        transparent 90deg, rgba(226,189,82,0.04) 95deg, transparent 100deg,
+        transparent 120deg, rgba(226,189,82,0.03) 125deg, transparent 130deg,
+        transparent 150deg, rgba(226,189,82,0.05) 155deg, transparent 160deg,
+        transparent 180deg, rgba(226,189,82,0.04) 185deg, transparent 190deg,
+        transparent 210deg, rgba(226,189,82,0.03) 215deg, transparent 220deg,
+        transparent 240deg, rgba(226,189,82,0.05) 245deg, transparent 250deg,
+        transparent 270deg, rgba(226,189,82,0.04) 275deg, transparent 280deg,
+        transparent 300deg, rgba(226,189,82,0.03) 305deg, transparent 310deg,
+        transparent 330deg, rgba(226,189,82,0.05) 335deg, transparent 340deg,
+        transparent 360deg
+    );
+    border-radius:50%;
+}
+.sun-rays::after{animation:raysSpin 80s linear infinite reverse;}
+@keyframes raysSpin{to{transform:rotate(360deg);}}
+
+/* sun body */
+.sun-body{
+    position:absolute;
+    inset:15%;border-radius:50%;
+    background:
+        radial-gradient(circle at 38% 35%,
+            #fceabb 0%,
+            var(--gold-bright) 25%,
+            var(--gold) 45%,
+            var(--corona) 70%,
+            var(--ember) 90%
+        );
+    box-shadow:
+        0 0 60px rgba(226,189,82,0.3),
+        0 0 120px rgba(226,189,82,0.15),
+        0 0 200px rgba(226,189,82,0.08),
+        inset 0 0 40px rgba(255,255,255,0.2);
+    animation:sunBreathe 5s ease-in-out infinite;
+}
+@keyframes sunBreathe{0%,100%{box-shadow:0 0 60px rgba(226,189,82,0.3),0 0 120px rgba(226,189,82,0.15),0 0 200px rgba(226,189,82,0.08),inset 0 0 40px rgba(255,255,255,0.2);}50%{box-shadow:0 0 80px rgba(226,189,82,0.4),0 0 160px rgba(226,189,82,0.2),0 0 260px rgba(226,189,82,0.1),inset 0 0 50px rgba(255,255,255,0.25);}}
+
+/* sun surface texture */
+.sun-body::before{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    background:
+        radial-gradient(circle at 25% 30%, rgba(255,255,255,0.15) 0%, transparent 30%),
+        radial-gradient(circle at 60% 65%, rgba(184,98,42,0.12) 0%, transparent 25%),
+        radial-gradient(circle at 75% 25%, rgba(255,255,255,0.08) 0%, transparent 20%),
+        radial-gradient(circle at 40% 70%, rgba(184,98,42,0.08) 0%, transparent 20%);
+    animation:surfaceShift 12s ease-in-out infinite;
+}
+@keyframes surfaceShift{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* specular highlight */
+.sun-body::after{
+    content:'';position:absolute;top:12%;left:18%;
+    width:40%;height:30%;border-radius:50%;
+    background:radial-gradient(ellipse, rgba(255,255,255,0.35) 0%, transparent 70%);
+    transform:rotate(-20deg);
+}
+
+/* orbiting planets (tiny decorative dots) */
+.orbit{position:absolute;inset:-15%;border-radius:50%;border:1px dashed rgba(201,168,76,0.12);animation:orbitSpin 30s linear infinite;}
+.orbit:nth-child(6){inset:-30%;animation-duration:50s;border-style:dotted;border-color:rgba(201,168,76,0.08);}
+.orbit-dot{
+    position:absolute;top:0;left:50%;transform:translate(-50%,-50%);
+    width:6px;height:6px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 8px var(--glow);
+}
+.orbit:nth-child(6) .orbit-dot{width:4px;height:4px;background:var(--ember);top:50%;left:0;transform:translate(-50%,-50%);}
+
+/* ═══════════════════════════════
+   TRUST BAR
+═══════════════════════════════ */
+.trust{
+    padding:3.5rem 0;border-top:1px solid rgba(201,168,76,0.1);
+    border-bottom:1px solid rgba(201,168,76,0.1);
+    background:var(--warm-white);
+}
+.trust-inner{
+    display:flex;justify-content:center;gap:3.5rem;flex-wrap:wrap;
+    align-items:center;
+}
+.trust-item{
+    font-family:var(--sans);font-size:.72rem;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);
+    display:flex;align-items:center;gap:.6rem;
+}
+.trust-item .t-icon{font-size:1.1rem;opacity:.7;}
+
+/* ═══════════════════════════════
+   PRODUCTS
+═══════════════════════════════ */
+#products{padding:7rem 0;background:var(--ivory);}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;}
+.prod-card{
+    background:var(--warm-white);border:1px solid rgba(201,168,76,0.12);
+    border-radius:16px;padding:2.5rem 2rem;position:relative;overflow:hidden;
+    transition:all .4s var(--ease);
+}
+.prod-card.linked{cursor:pointer;}
+.prod-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--corona),var(--gold));
+    opacity:0;transition:opacity .35s;
+}
+.prod-card:hover{
+    transform:translateY(-6px);border-color:rgba(201,168,76,0.25);
+    box-shadow:0 20px 60px rgba(201,168,76,0.08);
+}
+.prod-card:hover::before{opacity:1;}
+.prod-badge{
+    display:inline-block;padding:.25rem .8rem;margin-bottom:1.2rem;
+    border-radius:100px;font-size:.68rem;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;
+}
+.badge-live{background:rgba(201,168,76,0.12);color:var(--gold-dark);}
+.badge-soon{background:rgba(154,141,126,0.12);color:var(--text-light);}
+.prod-card h3{
+    font-family:var(--serif);font-size:1.6rem;font-weight:500;
+    color:var(--char);margin-bottom:.6rem;
+}
+.prod-card p{color:var(--text-mid);font-size:.9rem;line-height:1.7;margin-bottom:1.4rem;}
+.prod-tags{display:flex;gap:.5rem;flex-wrap:wrap;}
+.prod-tag{
+    font-size:.7rem;font-weight:600;letter-spacing:.06em;
+    padding:.3rem .7rem;border-radius:6px;
+    background:var(--ivory);color:var(--text-light);border:1px solid var(--parchment);
+}
+.prod-price{
+    position:absolute;top:2.2rem;right:2rem;
+    font-family:var(--serif);font-size:1.3rem;font-weight:600;
+    color:var(--gold-dark);
+}
+
+/* ═══════════════════════════════
+   PHILOSOPHY
+═══════════════════════════════ */
+#philosophy{
+    padding:7rem 0;
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(226,189,82,0.04) 0%, transparent 50%),
+        var(--warm-white);
+}
+.phil-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;
+}
+.phil{text-align:center;padding:1.5rem;}
+.phil-num{
+    font-family:var(--serif);font-size:3rem;font-weight:300;
+    color:var(--gold);line-height:1;margin-bottom:.8rem;
+}
+.phil h3{
+    font-family:var(--serif);font-size:1.2rem;font-weight:500;
+    color:var(--char);margin-bottom:.6rem;font-style:italic;
+}
+.phil p{color:var(--text-mid);font-size:.88rem;line-height:1.7;}
+
+/* ═══════════════════════════════
+   ABOUT
+═══════════════════════════════ */
+#about{padding:7rem 0;background:var(--ivory);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-visual{
+    position:relative;height:400px;
+    background:linear-gradient(145deg,var(--warm-white),var(--parchment));
+    border-radius:16px;overflow:hidden;
+    border:1px solid rgba(201,168,76,0.12);
+}
+.about-visual::before{
+    content:'';position:absolute;inset:0;
+    background:
+        radial-gradient(circle at 30% 40%, rgba(226,189,82,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(212,129,58,0.06) 0%, transparent 40%);
+}
+.about-visual .sun-mini{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%, #fceabb 0%, var(--gold) 50%, var(--ember) 100%);
+    box-shadow:0 0 60px rgba(226,189,82,0.3),0 0 120px rgba(226,189,82,0.1);
+    animation:sunBreathe 5s ease-in-out infinite;
+}
+.about-visual .orbit-ring{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    border:1px dashed rgba(201,168,76,0.15);border-radius:50%;
+}
+.orbit-ring:nth-child(2){width:200px;height:200px;}
+.orbit-ring:nth-child(3){width:300px;height:300px;}
+.orbit-ring:nth-child(4){width:380px;height:380px;}
+.about-text blockquote{
+    font-family:var(--serif);font-size:1.5rem;font-weight:300;
+    font-style:italic;color:var(--char);line-height:1.5;
+    margin-bottom:1.5rem;
+    border-left:2px solid var(--gold);padding-left:1.5rem;
+}
+.about-text p{color:var(--text-mid);font-size:.95rem;line-height:1.8;margin-bottom:1rem;}
+
+/* ═══════════════════════════════
+   NEWSLETTER CTA
+═══════════════════════════════ */
+#cta{
+    padding:7rem 0;
+    background:
+        linear-gradient(180deg, var(--ivory) 0%, var(--warm-white) 100%);
+    text-align:center;
+}
+.cta-inner{max-width:560px;margin:0 auto;}
+.cta-form{
+    display:flex;gap:.6rem;margin-top:2rem;max-width:440px;margin-left:auto;margin-right:auto;
+}
+.cta-form input{
+    flex:1;padding:.85rem 1.2rem;background:var(--warm-white);
+    border:1.5px solid var(--sand);border-radius:100px;
+    font-family:var(--sans);font-size:.9rem;color:var(--text);outline:none;
+    transition:border-color .3s;
+}
+.cta-form input:focus{border-color:var(--gold);}
+.cta-form input::placeholder{color:var(--text-faint);}
+.cta-form button{
+    padding:.85rem 1.8rem;background:var(--char);color:var(--warm-white);
+    border:none;border-radius:100px;font-family:var(--sans);font-size:.82rem;
+    font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .3s;
+    text-transform:uppercase;white-space:nowrap;
+}
+.cta-form button:hover{background:var(--gold-dark);box-shadow:0 6px 25px var(--glow);}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer{
+    position:relative;z-index:1;padding:4rem 0 2rem;
+    border-top:1px solid rgba(201,168,76,0.12);
+    background:var(--warm-white);
+}
+.ft-grid{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.ft-brand .nav-brand{display:inline-block;margin-bottom:.6rem;}
+.ft-brand p{color:var(--text-light);font-size:.84rem;line-height:1.6;max-width:280px;}
+.ft-col h4{
+    font-family:var(--sans);font-size:.7rem;font-weight:700;color:var(--text-light);
+    text-transform:uppercase;letter-spacing:.14em;margin-bottom:1rem;
+}
+.ft-col a{display:block;color:var(--text-mid);text-decoration:none;font-size:.86rem;margin-bottom:.5rem;transition:color .3s;}
+.ft-col a:hover{color:var(--gold-dark);}
+.ft-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:2rem;border-top:1px solid rgba(201,168,76,0.08);
+    font-size:.76rem;color:var(--text-light);flex-wrap:wrap;gap:.8rem;
+}
+.ft-bottom a{color:var(--text-light);text-decoration:none;margin-left:1.2rem;transition:color .25s;}
+.ft-bottom a:hover{color:var(--gold-dark);}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr;text-align:center;gap:2rem;}
+    .hero-sub{margin-left:auto;margin-right:auto;}
+    .hero-actions{justify-content:center;}
+    .hero-visual{min-height:360px;}
+    .sun-container{width:260px;height:260px;}
+    .phil-grid{grid-template-columns:1fr;gap:1.5rem;}
+    .about-grid{grid-template-columns:1fr;gap:2rem;}
+    .ft-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+}
+@media(max-width:640px){
+    .nav-links{
+        display:none;position:absolute;top:var(--nav-h);left:0;right:0;
+        background:rgba(250,248,244,0.97);backdrop-filter:blur(20px);
+        flex-direction:column;padding:1.5rem 2rem;gap:1rem;
+        border-bottom:1px solid rgba(201,168,76,0.12);
+    }
+    .nav-links.open{display:flex;}
+    .burger{display:flex;}
+    .hero-actions{flex-direction:column;align-items:center;}
+    .prod-grid{grid-template-columns:1fr;}
+    .ft-grid{grid-template-columns:1fr;}
+    .ft-bottom{flex-direction:column;text-align:center;}
+    .cta-form{flex-direction:column;}
+    .sun-container{width:220px;height:220px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="nav">
+    <div class="nav-brand"><span>Aphelion</span> FXs</div>
+    <ul class="nav-links" id="navMenu">
+        <li><a href="#products">Plugins</a></li>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#cta">Updates</a></li>
+    </ul>
+    <button class="nav-cta" onclick="location.href='corvus-fx.html'">Explore Plugins</button>
+    <button class="burger" id="burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+<div class="wrap">
+    <div class="hero-grid">
+        <div class="hero-text">
+            <div class="hero-eyebrow rv">Professional Audio Plugins</div>
+            <h1 class="hero-h rv">The <em>Center</em> of<br><strong>Your Sound</strong></h1>
+            <p class="hero-sub rv">Studio-grade audio effects engineered with precision and warmth. Every plugin in the Aphelion FXs constellation is built to make your music radiate.</p>
+            <div class="hero-actions rv">
+                <button class="btn-gold" onclick="location.href='index.html#products'">Browse Plugins</button>
+                <button class="btn-outline" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Our Story</button>
+            </div>
+        </div>
+        <div class="hero-visual rv">
+            <div class="sun-container">
+                <div class="corona"></div>
+                <div class="corona"></div>
+                <div class="corona"></div>
+                <div class="sun-rays"></div>
+                <div class="sun-body"></div>
+                <div class="orbit"><div class="orbit-dot"></div></div>
+                <div class="orbit"><div class="orbit-dot"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══ TRUST ═══ -->
+<div class="trust">
+<div class="wrap">
+    <div class="trust-inner rv">
+        <div class="trust-item"><span class="t-icon">◆</span> VST3 Format</div>
+        <div class="trust-item"><span class="t-icon">◆</span> Windows & macOS</div>
+        <div class="trust-item"><span class="t-icon">◆</span> Zero Latency</div>
+        <div class="trust-item"><span class="t-icon">◆</span> Lifetime License</div>
+        <div class="trust-item"><span class="t-icon">◆</span> JUCE Framework</div>
+    </div>
+</div>
+</div>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section id="products">
+<div class="wrap">
+    <div class="sec-label rv">Our Constellation</div>
+    <h2 class="sec-title rv">Plugins Built to <em>Radiate</em></h2>
+    <p class="sec-desc rv">Each plugin in the Aphelion FXs lineup is a self-contained world of sound — engineered from the ground up with professional-grade DSP.</p>
+    <div class="prod-grid">
+        <div class="prod-card rv linked" onclick="location.href='corvus-fx.html'" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='corvus-fx.html';}">
+            <div class="prod-badge badge-live">Available Now</div>
+            <div class="prod-price">$15</div>
+            <h3>Corvus FX</h3>
+            <p>Professional multi-effect suite — analog-modeled distortion, 6-voice chorus, tape delay, and algorithmic reverb. Four studio-grade effects in one plugin with a deep space animated interface.</p>
+            <div class="prod-tags">
+                <span class="prod-tag">Distortion</span>
+                <span class="prod-tag">Chorus</span>
+                <span class="prod-tag">Delay</span>
+                <span class="prod-tag">Reverb</span>
+            </div>
+        </div>
+        <div class="prod-card rv" style="opacity:.75;">
+            <div class="prod-badge badge-soon">Coming Soon</div>
+            <h3>Perihelion</h3>
+            <p>Dedicated saturation and harmonic exciter with parallel processing, envelope following, and multi-band warmth. Get closer to the heat.</p>
+            <div class="prod-tags">
+                <span class="prod-tag">Saturation</span>
+                <span class="prod-tag">Harmonics</span>
+                <span class="prod-tag">Multi-band</span>
+            </div>
+        </div>
+        <div class="prod-card rv" style="opacity:.75;">
+            <div class="prod-badge badge-soon">Coming Soon</div>
+            <h3>Solstice</h3>
+            <p>Modulation powerhouse — phaser, flanger, rotary, and tremolo with tempo sync, stereo expansion, and analog-modeled LFOs. The turning point of your mix.</p>
+            <div class="prod-tags">
+                <span class="prod-tag">Phaser</span>
+                <span class="prod-tag">Flanger</span>
+                <span class="prod-tag">Tremolo</span>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══ PHILOSOPHY ═══ -->
+<section id="philosophy">
+<div class="wrap">
+    <div class="sec-label rv">Our Approach</div>
+    <h2 class="sec-title rv">Three Principles of <em>Light</em></h2>
+    <p class="sec-desc rv">Every decision we make orbits around what matters most — your music.</p>
+    <div class="phil-grid">
+        <div class="phil rv">
+            <div class="phil-num">I</div>
+            <h3>Precision Engineering</h3>
+            <p>No shortcuts. Every DSP algorithm is built from scratch with clean mathematics — Hermite interpolation, Julius O. Smith DC blocking, proper anti-aliasing. Professional quality is not optional.</p>
+        </div>
+        <div class="phil rv">
+            <div class="phil-num">II</div>
+            <h3>Musical Character</h3>
+            <p>Technical perfection means nothing without soul. Our effects are tuned by ear to feel alive — tape warmth, analog drift, organic modulation. Sound that moves you, not just your meters.</p>
+        </div>
+        <div class="phil rv">
+            <div class="phil-num">III</div>
+            <h3>Honest Value</h3>
+            <p>No subscriptions. No upsells. No locked features. One fair price, lifetime license, free updates forever. Your plugins should work for you, not the other way around.</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+<div class="wrap">
+    <div class="about-grid">
+        <div class="about-visual rv">
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring"></div>
+            <div class="sun-mini"></div>
+        </div>
+        <div class="about-text rv">
+            <div class="sec-label">About Aphelion FXs</div>
+            <blockquote>Sound is energy. We shape it with intention.</blockquote>
+            <p>Aphelion FXs is a boutique audio plugin studio building professional-grade effects for music producers, engineers, and sound designers. Every plugin we release is crafted with obsessive attention to both the science and the art of audio processing.</p>
+            <p>Named after the point in a planet's orbit farthest from the sun, Aphelion represents perspective — the vantage point where you can see the whole picture. We build tools that give you that clarity in your mix.</p>
+            <p style="color:var(--gold-dark);font-weight:500;font-style:italic;margin-top:1.5rem;">Based in the mountains of Appalachia. Built for studios everywhere.</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta">
+<div class="wrap">
+    <div class="cta-inner">
+        <div class="sec-label rv">Stay in Orbit</div>
+        <h2 class="sec-title rv" style="text-align:center;">Be First to Know</h2>
+        <p class="sec-desc rv" style="text-align:center;margin-left:auto;margin-right:auto;">Get notified when new plugins drop, receive exclusive presets, and join the Aphelion FXs community.</p>
+        <div class="cta-form rv">
+            <input type="email" placeholder="your@email.com" id="ctaEmail">
+            <button onclick="subEmail()">Subscribe</button>
+        </div>
+        <p class="rv" style="font-size:.76rem;color:var(--text-faint);margin-top:.8rem;text-align:center;">No spam, ever. Unsubscribe anytime.</p>
+    </div>
+</div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+<div class="wrap">
+    <div class="ft-grid">
+        <div class="ft-brand">
+            <div class="nav-brand"><span>Aphelion</span> FXs</div>
+            <p>Professional audio plugins engineered with precision and warmth. Studio-grade effects for producers who demand excellence.</p>
+        </div>
+        <div class="ft-col">
+            <h4>Plugins</h4>
+            <a href="corvus-fx.html">Corvus FX</a>
+            <a href="#products">Perihelion (Soon)</a>
+            <a href="#products">Solstice (Soon)</a>
+        </div>
+        <div class="ft-col">
+            <h4>Company</h4>
+            <a href="#about">About</a>
+            <a href="#philosophy">Philosophy</a>
+            <a href="mailto:support@aphelionfxs.com">Support</a>
+        </div>
+        <div class="ft-col">
+            <h4>Connect</h4>
+            <a href="#">Twitter / X</a>
+            <a href="#">Instagram</a>
+            <a href="#">YouTube</a>
+            <a href="#">Discord</a>
+        </div>
+    </div>
+    <div class="ft-bottom">
+        <span>&copy; 2026 Aphelion FXs LLC. All rights reserved.</span>
+        <div>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Refunds</a>
+        </div>
+    </div>
+</div>
+</footer>
+
+<script>
+/* nav scroll */
+addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+/* mobile menu */
+function toggleMenu(){document.getElementById('navMenu').classList.toggle('open');document.getElementById('burger').classList.toggle('open');}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('burger').classList.remove('open');}));
+
+/* scroll reveal */
+const obs=new IntersectionObserver(es=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*60);obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* subscribe placeholder */
+function subEmail(){
+    const em=document.getElementById('ctaEmail');
+    if(!em.value||!em.value.includes('@')){em.style.borderColor='var(--ember)';em.focus();return;}
+    em.value='';em.style.borderColor='var(--gold)';
+    em.placeholder='Thank you — you\'re in orbit!';
+    setTimeout(()=>{em.placeholder='your@email.com';em.style.borderColor='var(--sand)';},3000);
+}
+</script>
+</body>
+</html>
